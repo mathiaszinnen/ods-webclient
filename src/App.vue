@@ -22,7 +22,7 @@
         <v-toolbar-title>{{routerTitle}}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn flat to="/">Login</v-btn>
+          <v-btn @click="login">Login</v-btn>
         </v-toolbar-items>
       </v-toolbar>
 
@@ -39,6 +39,9 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import Router from './router';
+import Keycloak from 'keycloak-js';
+import { Action, Mutation } from 'vuex-class';
+import usermodule from './userservice/module';
 
 @Component
 export default class App extends Vue {
@@ -51,12 +54,21 @@ export default class App extends Vue {
     { title: 'About', route: '/about' },
   ];
 
+  @Action('initKeycloakAction', { namespace: 'user' })
+  private initKeycloakAction!: () => void;
+
+  @Mutation('initKeycloak', { namespace: 'user' })
+  private mutate!: () => void;
+
   private created() {
     this.routerTitle = Router.currentRoute.meta.title || '';
-
     Router.afterEach((to, from) => {
       this.routerTitle = to.meta.title || '';
     });
+  }
+
+  private login() {
+    this.mutate();
   }
 }
 </script>
