@@ -51,6 +51,7 @@ export default class App extends Vue {
   private items = [
     { title: 'Dashboard', route: '/' },
     { title: 'User', route: '/user' },
+    { title: 'Transformers', route: '/transformation' },
     { title: 'About', route: '/about' },
   ];
 

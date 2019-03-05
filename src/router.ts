@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
-import userRoutes from '@/userservice/router';
+import userRoutes from './userservice/router';
+import transformationRoutes from './transformationservice/router';
 
 Vue.use(Router);
 
@@ -10,12 +11,12 @@ const baseRoutes = [
     path: '/',
     name: 'home',
     component: Home,
-    meta: { title: 'Dashboard'},
+    meta: { title: 'Dashboard' },
   },
   {
     path: '/about',
     name: 'about',
-    meta: { title: 'About'},
+    meta: { title: 'About' },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -24,7 +25,7 @@ const baseRoutes = [
   },
 ];
 
-const routes = baseRoutes.concat(userRoutes);
+const routes = baseRoutes.concat(userRoutes, transformationRoutes);
 
 export default new Router({
   mode: 'history',
