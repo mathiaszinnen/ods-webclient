@@ -40,7 +40,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import Router from './router';
 import Keycloak from 'keycloak-js';
-import { Action, Mutation } from 'vuex-class';
+import { Action, Mutation, namespace } from 'vuex-class';
 import usermodule from './userservice/module';
 
 @Component
@@ -57,8 +57,8 @@ export default class App extends Vue {
   @Action('initKeycloakAction', { namespace: 'user' })
   private initKeycloakAction!: () => void;
 
-  @Mutation('initKeycloak', { namespace: 'user' })
-  private mutate!: () => void;
+  @Action('keycloakLoginAction', { namespace: 'user' })
+  private keycloakLoginAction!: () => void;
 
   private created() {
     this.routerTitle = Router.currentRoute.meta.title || '';
@@ -67,8 +67,12 @@ export default class App extends Vue {
     });
   }
 
+  private mounted() {
+    this.initKeycloakAction();
+  }
+
   private login() {
-    this.mutate();
+    this.keycloakLoginAction();
   }
 }
 </script>
