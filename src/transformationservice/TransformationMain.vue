@@ -7,18 +7,20 @@
       </v-form>
     </v-card>
     <v-btn color="success" @click="submit">submit</v-btn>
+    <h2>{{transformedObject}}</h2>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Action } from 'vuex-class';
+import { Action, State } from 'vuex-class';
 
 const namespace = { namespace: 'transformation' };
 
 @Component
 export default class TransformationMain extends Vue {
+  @State('transformedObject', namespace) private transformedObject!: any;
   @Action('fetchTransformation', namespace)
   private fetchTransformationAction!: (functionInput: string) => void;
 
