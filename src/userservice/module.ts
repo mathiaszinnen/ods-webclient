@@ -26,6 +26,11 @@ export default class UserModule extends VuexModule {
     this.userInfo = userInfo;
   }
 
+  get token() {
+    console.log(this.keycloak.token);
+    return this.keycloak.token;
+  }
+
   get clientId() {
     return this.keycloak.clientId;
   }

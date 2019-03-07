@@ -8,16 +8,14 @@ export default class TransformationModule extends VuexModule {
 
   @Action
   public fetchTransformation(functionInput: string) {
-    // transformationrestservice.job
-    const job = {
-      func: 'return 1',
-      data: null,
-    };
     fetch(TRANSFORMATION_URL, {
       method: 'POST',
       mode: 'cors',
       body: functionInput,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.rootState.user.token,
+      },
     })
       .then(response => {
         return response.json();
