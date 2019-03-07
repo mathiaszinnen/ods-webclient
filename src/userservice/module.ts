@@ -3,40 +3,31 @@ import Keycloak from 'keycloak-js';
 @Module({ namespaced: true })
 export default class UserModule extends VuexModule {
   private keycloak: Keycloak.KeycloakInstance = Keycloak();
+  private authenticated: boolean = false;
   private currentUserInfo = null;
 
-  get clientId() {
-    return this.keycloak.clientId;
-  }
-
-  get authenticated() {
-    return this.keycloak.authenticated;
-  }
-
-  @Action
-  public async initKeycloakAction() {
-    const newInstance: Keycloak.KeycloakInstance = Keycloak();
-    await newInstance.init({});
-    this.context.commit('setKeycloak', newInstance);
-  }
+  @Action({ commit: 'initKeycloak' })
+  public initKeycloakAction() {}
 
   @Action({ commit: 'keycloakLogin' })
-  public keycloakLoginAction() {
-    const newInstance: Keycloak.KeycloakInstance = Object.create(this.keycloak);
-    newInstance.login();
-    this.context.commit('setKeycloak', newInstance);
-  }
+  public keycloakLoginAction() {}
 
   @Mutation public keycloakLogin() {
     this.keycloak.login();
   }
 
-  @Mutation public setKeycloak(keycloak: Keycloak.KeycloakInstance) {
-    this.keycloak = keycloak;
+  @Mutation public initKeycloak() {
+    this.keycloak
+      .init({})
+      .success(authenticated => (this.authenticated = authenticated));
   }
 
   @Mutation public setUserInfo(userInfo: any) {
     this.userInfo = userInfo;
+  }
+
+  get clientId() {
+    return this.keycloak.clientId;
   }
 
   @Action({ commit: 'setUserinfo' })
