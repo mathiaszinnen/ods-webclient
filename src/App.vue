@@ -41,7 +41,6 @@ import Component from 'vue-class-component';
 import Router from './router';
 import Keycloak from 'keycloak-js';
 import { Action, Mutation, namespace } from 'vuex-class';
-import { keycloakInit } from '@/keycloak';
 
 @Component
 export default class App extends Vue {
