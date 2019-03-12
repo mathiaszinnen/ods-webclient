@@ -41,7 +41,6 @@ import Component from 'vue-class-component';
 import Router from './router';
 import Keycloak from 'keycloak-js';
 import { Action, Mutation, namespace } from 'vuex-class';
-import { keycloakInit } from '@/keycloak';
 
 @Component
 export default class App extends Vue {
@@ -59,10 +58,6 @@ export default class App extends Vue {
     Router.afterEach((to, from) => {
       this.routerTitle = to.meta.title || '';
     });
-  }
-
-  private mounted() {
-    keycloakInit();
   }
 }
 </script>
