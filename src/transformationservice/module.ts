@@ -1,5 +1,5 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
-import { useBearer, keycloakInit } from '../keycloak';
+import { useBearer, keycloakInit, keycloakLogin } from '../keycloak';
 
 const TRANSFORMATION_URL = 'http://localhost:4000/job';
 
@@ -27,10 +27,16 @@ export default class TransformationModule extends VuexModule {
   }
 
   @Action
-  public authenticate() {
+  public init() {
     keycloakInit()
-      .then(() => this.context.commit('setAuthenticated', true))
+      .then(instance => {
+        this.context.commit('setAuthenticated', instance.authenticated);
+      })
       .catch(() => this.context.commit('setAuthenticated', false));
+  }
+
+  @Action public login() {
+    keycloakLogin().then(() => this.context.commit('setAuthenticated', true));
   }
 
   @Mutation private setAuthenticated(authenticated: boolean) {

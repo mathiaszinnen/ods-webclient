@@ -1,6 +1,7 @@
 <template>
   <div v-if="authenticated" class="transformation-main">
     <h1>transformation service</h1>
+
     <v-card>
       <v-form>
         <v-textarea v-model="functionInput" full-width></v-textarea>
@@ -28,17 +29,13 @@ export default class TransformationMain extends Vue {
   @State('authenticated', namespace) private authenticated!: boolean;
   @Action('fetchTransformation', namespace)
   private fetchTransformationAction!: (functionInput: string) => void;
-  @Action('authenticate', namespace)
-  private authenticateAction!: () => void;
+  @Action('init', namespace)
+  private initAction!: () => void;
 
   private functionInput: string = '{"func":"return 1", "data":null}';
 
   private submit() {
     this.fetchTransformationAction(this.functionInput);
-  }
-
-  private mounted() {
-    this.authenticateAction();
   }
 }
 </script>

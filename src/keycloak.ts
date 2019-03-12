@@ -39,6 +39,27 @@ export function keycloakInit(
   });
 }
 
+export function keycloakLogin(): Promise<boolean> {
+  return new Promise<boolean>((resolve, reject) => {
+    if (keycloak) {
+      const keycloakAuth = keycloak;
+      keycloakAuth
+        .login()
+        .success(() => {
+          console.error('login successful');
+          resolve(true);
+        })
+        .error(() => {
+          console.error('login failed');
+          reject(false);
+        });
+    } else {
+      console.error('keycloak undefined');
+      reject(false);
+    }
+  });
+}
+
 export function useBearer(): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     if (keycloak && keycloak.token) {
