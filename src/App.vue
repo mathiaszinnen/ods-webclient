@@ -60,10 +60,6 @@ export default class App extends Vue {
       this.routerTitle = to.meta.title || '';
     });
   }
-
-  private mounted() {
-    keycloakInit();
-  }
 }
 </script>
 
