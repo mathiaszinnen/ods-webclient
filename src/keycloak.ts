@@ -8,7 +8,6 @@ let keycloak: KeycloakInstance | undefined;
 
 export function keycloakInit(
   options = {
-    onLoad: 'login-required',
     checkLoginIframe: false,
   } as KeycloakInitOptions,
 ): Promise<KeycloakInstance> {
