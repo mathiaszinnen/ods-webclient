@@ -46,15 +46,15 @@ export function keycloakLogin(): Promise<boolean> {
       keycloakAuth
         .login()
         .success(() => {
-          console.error('login successful');
+          console.error('Login successful');
           resolve(true);
         })
         .error(() => {
-          console.error('login failed');
+          console.error('Login failed');
           reject(false);
         });
     } else {
-      console.error('keycloak undefined');
+      console.error('Login failed: Keycloak is probably not initialized');
       reject(false);
     }
   });
@@ -76,4 +76,21 @@ export function useBearer(): Promise<string> {
       reject('Not logged in');
     }
   });
+}
+
+export function isAuthenticated(): boolean {
+  if (keycloak) {
+    const keycloakAuth = keycloak;
+    if (keycloakAuth.authenticated !== undefined) {
+      return keycloakAuth.authenticated;
+    } else {
+      console.error('Keycloak authentication status undefined');
+      return false;
+    }
+  } else {
+    console.error(
+      'Not possible to determine authentication status: Keycloak is probably not initialized',
+    );
+    return false;
+  }
 }

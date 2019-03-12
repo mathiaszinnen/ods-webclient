@@ -1,5 +1,5 @@
 <template>
-  <div v-if="authenticated" class="transformation-main">
+  <div class="transformation-main">
     <h1>transformation service</h1>
 
     <v-card>
@@ -9,9 +9,6 @@
     </v-card>
     <v-btn color="success" @click="submit">submit</v-btn>
     <h2>{{transformedObject}}</h2>
-  </div>
-  <div v-else>
-    <h1>please authenticate</h1>
   </div>
 </template>
 
@@ -26,7 +23,6 @@ const namespace = { namespace: 'transformation' };
 @Component
 export default class TransformationMain extends Vue {
   @State('transformedObject', namespace) private transformedObject!: any;
-  @State('authenticated', namespace) private authenticated!: boolean;
   @Action('fetchTransformation', namespace)
   private fetchTransformationAction!: (functionInput: string) => void;
   @Action('init', namespace)
