@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
-import userRoutes from './userservice/router';
 import transformationRoutes from './transformationservice/router';
 
 Vue.use(Router);
@@ -25,7 +24,7 @@ const baseRoutes = [
   },
 ];
 
-const routes = baseRoutes.concat(userRoutes, transformationRoutes);
+const routes = baseRoutes.concat(transformationRoutes);
 
 export default new Router({
   mode: 'history',
