@@ -1,4 +1,5 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
+import { useBearer } from '../keycloak';
 
 const TRANSFORMATION_URL = 'http://localhost:4000/job';
 
@@ -7,14 +8,15 @@ export default class TransformationModule extends VuexModule {
   private transformedObject: string = '';
 
   @Action
-  public fetchTransformation(functionInput: string) {
+  public async fetchTransformation(functionInput: string) {
+    const token = await useBearer();
     fetch(TRANSFORMATION_URL, {
       method: 'POST',
       mode: 'cors',
       body: functionInput,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.context.rootState.user.token,
+        Authorization: 'Bearer ' + token,
       },
     })
       .then(response => {

@@ -5,7 +5,6 @@ import router from './router';
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 import '@mdi/font/css/materialdesignicons.css';
-import UserModule from './userservice/module';
 import TransformationModule from './transformationservice/module';
 
 Vue.use(Vuetify, {
@@ -18,7 +17,6 @@ Vue.config.productionTip = false;
 
 export const store = new Vuex.Store({
   modules: {
-    user: UserModule,
     transformation: TransformationModule,
   },
 });
