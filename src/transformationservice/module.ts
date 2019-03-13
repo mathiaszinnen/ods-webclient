@@ -5,7 +5,6 @@ const TRANSFORMATION_URL = 'http://localhost:4000/job';
 
 @Module({ namespaced: true })
 export default class TransformationModule extends VuexModule {
-  private authenticated: boolean = false;
   private transformedObject: string = '';
 
   @Action
@@ -30,17 +29,9 @@ export default class TransformationModule extends VuexModule {
   public init() {
     keycloakInit()
       .then(instance => {
-        this.context.commit('setAuthenticated', instance.authenticated);
+        console.error('init');
       })
-      .catch(() => this.context.commit('setAuthenticated', false));
-  }
-
-  @Action public login() {
-    keycloakLogin().then(() => this.context.commit('setAuthenticated', true));
-  }
-
-  @Mutation private setAuthenticated(authenticated: boolean) {
-    this.authenticated = authenticated;
+      .catch(() => console.error('no init'));
   }
 
   @Mutation private setTransformedObject(object: string) {

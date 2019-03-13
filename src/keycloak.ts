@@ -1,4 +1,8 @@
-import Keycloak, { KeycloakInitOptions, KeycloakInstance } from 'keycloak-js';
+import Keycloak, {
+  KeycloakInitOptions,
+  KeycloakInstance,
+  KeycloakLoginOptions,
+} from 'keycloak-js';
 
 // =================================================================================================
 
@@ -7,9 +11,7 @@ let keycloak: KeycloakInstance | undefined;
 // =================================================================================================
 
 export function keycloakInit(
-  options = {
-    checkLoginIframe: false,
-  } as KeycloakInitOptions,
+  options = {} as KeycloakInitOptions,
 ): Promise<KeycloakInstance> {
   return new Promise((resolve, reject) => {
     const keycloakAuth = (keycloak = Keycloak());
@@ -17,7 +19,10 @@ export function keycloakInit(
       keycloakAuth
         .init(options)
         .success(authenticated => {
-          console.error('Keycloak initialization successful:', authenticated);
+          console.error(
+            'Keycloak initialization successful. Login Status:',
+            authenticated,
+          );
           resolve(keycloakAuth);
         })
         .error((errorData: any) => {
@@ -39,12 +44,16 @@ export function keycloakInit(
   });
 }
 
-export function keycloakLogin(): Promise<boolean> {
+export function keycloakLogin(
+  options = {
+    prompt: 'login',
+  } as KeycloakLoginOptions,
+): Promise<boolean> {
   return new Promise<boolean>((resolve, reject) => {
     if (keycloak) {
       const keycloakAuth = keycloak;
       keycloakAuth
-        .login()
+        .login(options)
         .success(() => {
           console.error('Login successful');
           resolve(true);
@@ -55,6 +64,27 @@ export function keycloakLogin(): Promise<boolean> {
         });
     } else {
       console.error('Login failed: Keycloak is probably not initialized');
+      reject(false);
+    }
+  });
+}
+
+export function keycloakLogout(): Promise<boolean> {
+  return new Promise<boolean>((resolve, reject) => {
+    if (keycloak) {
+      const keycloakAuth = keycloak;
+      keycloakAuth
+        .logout()
+        .success(() => {
+          console.error('Logout successful');
+          resolve(true);
+        })
+        .error(() => {
+          console.error('Logout failed');
+          reject(false);
+        });
+    } else {
+      console.error('Logout failed: Keycloak is probably not initialized');
       reject(false);
     }
   });
