@@ -5,6 +5,6 @@ export default [
     path: '/transformation',
     name: 'transformation',
     component: TransformationMain,
-    meta: { title: 'Transformation Service' },
+    meta: { title: 'Transformation Service', requiresAuth: true },
   },
 ];

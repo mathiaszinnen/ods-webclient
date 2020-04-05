@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import transformationRoutes from './transformationservice/router';
+import { isAuthenticated, keycloakLogin } from './keycloak';
 
 Vue.use(Router);
 
@@ -26,8 +27,17 @@ const baseRoutes = [
 
 const routes = baseRoutes.concat(transformationRoutes);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !isAuthenticated()) {
+    keycloakLogin();
+  }
+  next();
+});
+
+export default router;

@@ -22,7 +22,12 @@
         <v-toolbar-title>{{routerTitle}}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn>Login</v-btn>
+          <div v-if="authenticated">
+            <v-btn @click="login">Logout</v-btn>
+          </div>
+          <div v-else>
+            <v-btn @click="logout">Login</v-btn>
+          </div>
         </v-toolbar-items>
       </v-toolbar>
 
@@ -40,7 +45,10 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import Router from './router';
 import Keycloak from 'keycloak-js';
-import { Action, Mutation, namespace } from 'vuex-class';
+import { Action, namespace } from 'vuex-class';
+import { isAuthenticated, keycloakLogin, keycloakLogout } from '@/keycloak';
+
+const transformationNamespace = { namespace: 'transformation' };
 
 @Component
 export default class App extends Vue {
@@ -52,12 +60,29 @@ export default class App extends Vue {
     { title: 'Transformers', route: '/transformation' },
     { title: 'About', route: '/about' },
   ];
+  @Action('init', transformationNamespace)
+  private initKeycloakAction!: () => void;
+
+  private authenticated: boolean = false;
 
   private created() {
     this.routerTitle = Router.currentRoute.meta.title || '';
     Router.afterEach((to, from) => {
       this.routerTitle = to.meta.title || '';
     });
+    this.initKeycloakAction();
+  }
+
+  private updated() {
+    this.authenticated = isAuthenticated();
+  }
+
+  private login() {
+    keycloakLogin();
+  }
+
+  private logout() {
+    keycloakLogout();
   }
 }
 </script>
